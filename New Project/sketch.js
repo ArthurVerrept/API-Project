@@ -1,6 +1,7 @@
 let getLocationL = "Berlin";
 let apiKey = "LipKCauFo7AcRa7pJ";
 let weather;
+let array = [];
 
 function preload() {
   let url = "https://api.airvisual.com/v2/countries?&key=" + apiKey;
@@ -8,6 +9,7 @@ function preload() {
 }
 
 function setup() {
-  console.log(weather); //Return all JSON data
-  //console.log(weather2);
+  for (var i = 0; i < weather.data.length; i++) {
+    console.log(weather.data[i].country); //Return all JSON data
+  }
 }
