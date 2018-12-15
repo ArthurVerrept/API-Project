@@ -7,7 +7,7 @@ var year = '2004-';
 var month = '12-';
 
 function setup(){
-  csv = loadJSON("DisasterData.json");
+  csv = loadJSON('https://api.reliefweb.int/v1/reports?appname=arthur-verrept@hotmail.co.uk&filter[field]=date.created&filter[value][from]=2004-06-01T00:00:00%2B00:00&filter[value][to]=2004-06-30T23:59:59%2B00:00&fields[include][]=country.name&fields[include][]=date');
   console.log(csv);
 
 }
