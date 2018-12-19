@@ -7,7 +7,7 @@ function preload() {
   for (var i = 0; i < locationArray.length; i++) {
     let url = "http://api.openweathermap.org/data/2.5/weather?q="+locationArray[i]+"&units=metric&appid="+apiKey;
     weather[i] = loadJSON(url);
-    console.log(weather[i]);
+
   }
 }
 //
@@ -26,7 +26,7 @@ function draw() {
     if (weather[i].main.temp>5 && weather[i].main.temp<10) mapColor[i] = color(234, 231, 222);
     if (weather[i].main.temp>10 && weather[i].main.temp<20) mapColor[i] = color(234, 208, 155);
     if (weather[i].main.temp>20) mapColor[i] = color(234, 140, 0);
-
+    console.log(weather[i].main.temp);
     var pos = i * 200;
 
     if (pos < 600) {
