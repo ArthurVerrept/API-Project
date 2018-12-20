@@ -1,6 +1,7 @@
 var disaster = [];
 var country = [];
-var temp = [];
+var disasterIso = [];
+var disasterLoc = [];
 
 let apiKeyM = "pk.eyJ1IjoiYXJ0aHVydmVycmVwdCIsImEiOiJjanBqdWFuc2EwYTFxM3ZwZjNlcnBvN2ZtIn0.AP8VWsR0JqBf1JItg_VMvw";
 var year = '2014';
@@ -9,20 +10,23 @@ var urlD = 'https://api.reliefweb.int/v1/disasters?appname=arthur-verrept@hotmai
 
 
 function preload(){
-let promise = fetch(urlD)
-.then(response => response.json())
-.then(json => console.log(json));
-
+loadJSON(urlD, loadD)
 }
 
+function loadD(disaster){
+  for (var i = 0; i < disaster.data.length; i++){
+    disasterIso[i] = 'http://countryapi.gear.host/v1/Country/getCountries?pAlpha3Code=' + disaster.data[i].fields.country[0].iso3
+  }
+  loadCoords();
+}
 
+function loadCoords(){
+  for (var i = 0; i < disasterIso.length; i++) {
+    disasterLoc[i] = loadJSON(disasterIso[i])
+  }
+}
 
-console.log(temp);
-function draw(){
-noLoop();
-var int;
-
-
+function setup(){
  mapboxgl.accessToken = apiKeyM;
 
 let map = new mapboxgl.Map({
