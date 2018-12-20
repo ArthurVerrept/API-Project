@@ -17,10 +17,17 @@ function preload(){
   })
   .then(function(disaster){
     for (var i = 0; i < disaster.data.length; i++){
-      disasterIso[i] = 'http://countryapi.gear.host/v1/Country/getCountries?pAlpha3Code=' + disaster.data[i].fields.country[0].iso3  
+      disasterIso[i] = 'http://countryapi.gear.host/v1/Country/getCountries?pAlpha3Code=' + disaster.data[i].fields.country[0].iso3
     }
     console.log(disasterIso);
-});
+  })
+  .then(function(){
+    for (var i = 0; i < disasterIso.length; i++) {
+      disasterLoc[i] = loadJSON(disasterIso[i])
+    }
+    console.log(disasterLoc);
+  })
+  .then(loadMap);
 
 
 
@@ -33,12 +40,7 @@ function preload(){
 }
 
 
-function loadCoords(){
-  for (var i = 0; i < disasterIso.length; i++) {
-    disasterLoc[i] = loadJSON(disasterIso[i])
-  }
-  console.log(disasterLoc);
-}
+
 
 function setup(){
 }
@@ -56,7 +58,7 @@ function loadMap(){
     "type": "Feature",
     "geometry": {
       "type": "Point",
-      "coordinates": [disasterLoc[0].response[0].latitude, disasterLoc[0].response[0].longitude]
+      "coordinates": [disasterLoc[0].Response[0].Longitude, disasterLoc[0].Response[0].Latitude]
     },
     "properties": {
       "name": "Dinagat Islands"
