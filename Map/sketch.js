@@ -47,28 +47,31 @@ function setup(){
 
 function loadMap(){
   mapboxgl.accessToken = apiKeyM;
- let map = new mapboxgl.Map({
- container: 'app',
- style: 'mapbox://styles/mapbox/basic-v9'
- });
- map.on('load', function() {
-  map.addSource('pointSource',{
-  type: 'geojson',
-  data:   {
-    "type": "Feature",
-    "geometry": {
-      "type": "Point",
-      "coordinates": [disasterLoc[0].Response[0].Longitude, disasterLoc[0].Response[0].Latitude]
-    },
-    "properties": {
-      "name": "Dinagat Islands"
-    },
-  }
+  let map = new mapboxgl.Map({
+    container: 'app',
+    style: 'mapbox://styles/mapbox/basic-v9'
   });
-  map.addLayer({
-    id: 'points'+int,
-    source:'pointSource',
-    type: 'circle'
-});
-})
+
+  map.on('load', function() {
+     for (var i = 0; i < disasterLoc.length; i++) {
+         map.addSource('pointSource' + i,{
+         type: 'geojson',
+         data:   {
+           "type": "Feature",
+           "geometry": {
+             "type": "Point",
+             "coordinates": [disasterLoc[i].Response[0].Longitude, disasterLoc[i].Response[0].Latitude]
+           },
+           "properties": {
+             "name": "Dinagat Islands"
+           },
+         }
+         });
+         map.addLayer({
+           id: 'points' + i,
+           source:'pointSource' + i,
+           type: 'circle'
+       });
+     }
+  })
 }
