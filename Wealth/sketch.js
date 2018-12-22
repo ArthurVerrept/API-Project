@@ -11,20 +11,35 @@ function preload(){
 function setup() {
   console.log(data)
   upper = createSlider(0, 100, 10);
+  textAlign(CENTER)
 }
 
 function draw() {
   background(240);
+  var textHeight = 20;
   var r = upper.value();
   console.log(r)
   fill(255, 0, 0);
   let total = 0;
   for (var i = 0; i < r; i++) {
-    textSize(10);
-    console.log(data[i].name);
-    text(data[i].name, (width) * (i / r)+10, 20)
-    text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', (width) * (i / r)+10, 40)
+    if (r <= 20) {
+      if (data[i].name.length < 11) {
+        textSize(map(r, 0, 20, 20, 7.5));
+        console.log(data[i].name);
+        text(data[i].name, (width - 20) * (i / r)+40, textHeight)
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', (width - 20) * (i / r)+40, textHeight*2 - map(r, 0, 25, 0,12));
+      }
+      else{
+        textSize(map(r, 0, 20, 20, 7.5));
+        console.log(data[i].name);
+        text(data[i].lastName, (width - 20) * (i / r)+40, textHeight)
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', (width - 20) * (i / r)+40, textHeight*2 - map(r, 0, 25, 0,12));
+      }
+    }
   }
+
+
+
   for (var i = 0; i < r; i++) {
     if (data[i].realTimeWorth != null) {
       var num = Math.round(data[i].realTimeWorth/1000);
