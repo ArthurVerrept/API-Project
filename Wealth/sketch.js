@@ -27,9 +27,10 @@ function setup() {
   upper = createSlider(0, 100, 10);
   textAlign(CENTER)
   imageMode(CENTER)
-  for (var i = 0; i < 25; i++) {
+  for (var i = 0; i < 30; i++) {
     img[i] = loadImage("images/" + data[i].name + ".jpg");
   }
+  console.log(data)
 }
 
 
@@ -51,36 +52,39 @@ function richList(){
   var total = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
-    words.x = (width - 10) * (i / r)+60;
-    pic.x = (width - 10) * (i / r)+60;
-    pic.size = map(r, 0, 100, 90, 50)
     if (r <= 20) {
+      words.x = (width-80) * (i / r)+80;
+      pic.x = (width-80) * (i / r)+80;
+      pic.size = map(r, 0, 20, 90, 60)
       if (data[i].name.length <= 11) {
-        image(img[i], pic.x, pic.y, pic.size, pic.size);
-        textSize(map(r, 0, 20, 18, 6.75));
-        text(data[i].name, words.x, words.y)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+        if (checkMouse(pic.x, pic.y, pic.size, img[i]) == true) {
+          image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
+          textSize(map(r, 0, 20, 18, 6.75)*1.5);
+          text(data[i].name, words.x, words.y)
+          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+        }
+        else{
+          image(img[i], pic.x, pic.y, pic.size, pic.size);
+          textSize(map(r, 0, 20, 18, 6.75));
+          text(data[i].name, words.x, words.y)
+          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+        }
+
+
       }
       else{
-        console.log(data[i])
-        image(img[i], pic.x, pic.y, pic.size, pic.size);
-        textSize(map(r, 0, 20, 18, 6.75));
-        text(data[i].lastName, words.x, words.y)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
-      }
-    }
-    if (r <= 40 && r > 20) {
-      if (data[i].name.length < 11) {
-        image(img[i], pic.x, pic.y, pic.size, pic.size);
-        textSize(map(r, 0, 20, 18, 6.75));
-        text(data[i].name, words.x, words.y)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+118 - map(r, 0, 25, 0,12));
-      }
-      else{
-        image(img[i], pic.x, pic.y, pic.size, pic.size);
-        textSize(map(r, 0, 20, 18, 6.75));
-        text(data[i].lastName, words.x, words.y)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+118 - map(r, 0, 25, 0,12));
+        if (checkMouse(pic.x, pic.y, pic.size, img[i]) == true) {
+          image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
+          textSize(map(r, 0, 20, 18, 6.75)*1.5);
+          text(data[i].name, words.x, words.y)
+          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+        }
+        else{
+          image(img[i], pic.x, pic.y, pic.size, pic.size);
+          textSize(map(r, 0, 20, 18, 6.75));
+          text(data[i].name, words.x, words.y)
+          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+        }
       }
     }
   }
@@ -106,5 +110,14 @@ function richList(){
     textSize(map(total, 0, 1000, 7.5, 15))
     text('$' + precise(total) + ' BILLION', width/2, height/2)
   }
+}
 
+function checkMouse(){
+  if(mouseX < pic.x + (pic.size / 2) && mouseX > pic.x - (pic.size / 2) && mouseY < pic.y + (pic.size / 2) && mouseY > pic.y - (pic.size / 2)){
+    image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
+    return true;
+  }
+  else{
+    return false;
+  }
 }
