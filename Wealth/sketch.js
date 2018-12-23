@@ -8,7 +8,7 @@ var current;
 
 var words = {
   x: 0,
-  y: 58,
+  y: 50,
   size: 0
 };
 
@@ -25,7 +25,7 @@ function preload(){
 
 
 function setup() {
-  upper = createSlider(0, 100, 10);
+  upper = createSlider(0, 20, 10);
   textAlign(CENTER);
   imageMode(CENTER);
   ellipseMode(CENTER);
@@ -63,33 +63,35 @@ function richList(){
       pic.size = map(r, 0, 20, 90, 60)
         if (checkMouse(pic.x, pic.y, pic.size) == true) {
           background(240)
+          fill(240,240,240, 100)
+          tint(240, 126);
           for (var x = 0; x < i; x++) {
             words.x = (width-80) * (x / r)+80;
             pic.x = (width-80) * (x / r)+80;
             pic.size = map(r, 0, 20, 90, 60)
-            image(img[x], pic.x, pic.y, pic.size*0.5, pic.size*0.5);
-            textSize(map(r, 0, 20, 18, 6.75)*1.5);
-            text(data[i].name, words.x, words.y)
-            text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+            image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
+            textSize(map(r, 0, 20, 18, 6.75)*0.7);
+            text(data[x].name, words.x, words.y)
+            text('$' + financial(data[x].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
           }
-
-          words.x = (width-80) * (i / r)+80;
-          pic.x = (width-80) * (i / r)+80;
-          pic.size = map(r, 0, 20, 90, 60)
-          image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
-          textSize(map(r, 0, 20, 18, 6.75)*1.5);
-          text(data[i].name, words.x, words.y)
-          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
-
           for (var x = i+1; x < r; x++) {
             words.x = (width-80) * (x / r)+80;
             pic.x = (width-80) * (x / r)+80;
             pic.size = map(r, 0, 20, 90, 60)
-            image(img[x], pic.x, pic.y, pic.size*0.5, pic.size*0.5);
-            textSize(map(r, 0, 20, 18, 6.75)*1.5);
-            text(data[i].name, words.x, words.y)
-            text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+            image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
+            textSize(map(r, 0, 20, 18, 6.75)*0.7);
+            text(data[x].name, words.x, words.y)
+            text('$' + financial(data[x].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
           }
+          fill(240)
+          tint(240, 255);
+          words.x = (width-80) * (i / r)+80;
+          pic.x = (width-80) * (i / r)+80;
+          pic.size = map(r, 0, 20, 90, 60)
+          image(img[i], pic.x, pic.y+200, pic.size*4, pic.size*4);
+          textSize(map(r, 0, 20, 18, 6.75)*2);
+          text(data[i].name, words.x, words.y+200)
+          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+240 - map(r, 0, 25, 0,12));
           i= x;
         }
         else{
