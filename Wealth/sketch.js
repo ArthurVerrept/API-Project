@@ -3,6 +3,7 @@ var url = 'https://forbes400.herokuapp.com/api/forbes400?limit=100';
 var data = [];
 var temp =[];
 var upper;
+var img = [];
 
 function preload(){
   createCanvas(1280, 720)
@@ -13,6 +14,10 @@ function preload(){
 function setup() {
   upper = createSlider(0, 100, 10);
   textAlign(CENTER)
+  imageMode(CENTER)
+  for (var i = 0; i < 12; i++) {
+    img[i] = loadImage("images/" + data[i].name + ".jpg");
+  }
 }
 
 
@@ -22,10 +27,11 @@ function draw() {
   var r = upper.value();
   fill(255, 0, 0);
   let total = 0;
-  loadImage(data[0].squareImage);
+
   for (var i = 0; i < r; i++) {
     if (r <= 20) {
       if (data[i].name.length < 11) {
+        image(img[i], (width - 20) * (i / r)+40, textHeight, 50, 50);
         textSize(map(r, 0, 20, 20, 7.5));
         text(data[i].name, (width - 20) * (i / r)+40, textHeight)
         text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', (width - 20) * (i / r)+40, textHeight*2 - map(r, 0, 25, 0,12));
@@ -67,17 +73,4 @@ function precise(x) {
 
 function financial(x) {
 return Number.parseFloat(x).toFixed(2);
-}
-
-function loadImage(imageUrl){
-  console.log('https:' + imageUrl)
-  var canvas = document.getElementById("myCanvas");
-  var context = canvas.getContext("2d");
-
-  var img = new Image();
-  img.onload = function() {
-     context.drawImage(img, 0, 0);
-  };
-
-  img.src = 'https:' + imageUrl;
 }
