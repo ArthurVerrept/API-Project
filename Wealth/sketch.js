@@ -7,6 +7,7 @@ var img = [];
 var current;
 var flags = [];
 
+
 var words = {
   x: 0,
   y: 50,
@@ -58,6 +59,8 @@ function richList(){
   background(240);
   var r = upper.value();
   var total = 0;
+  var totalLong = 0;
+  var usaWage = 0;
   var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
@@ -68,7 +71,7 @@ function richList(){
         if (checkMouse(pic.x, pic.y, pic.size) == true) {
           background(240);
           fill(240,240,240, 150)
-          tint(240, 126);
+          //tint(240, 126);
           for (var x = 0; x < i; x++) {
             words.x = (width-80) * (x / r)+80;
             pic.x = (width-80) * (x / r)+80;
@@ -76,7 +79,6 @@ function richList(){
             image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
             textSize(map(r, 0, 20, 50, 30)*0.7);
             text('#' + data[x].rank, words.x, words.y+10)
-            //text('$' + financial(data[x].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
           }
           for (var x = i+1; x < r; x++) {
             words.x = (width-80) * (x / r)+80;
@@ -85,7 +87,6 @@ function richList(){
             image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
             textSize(map(r, 0, 20, 50, 30)*0.7);
             text('#' + data[x].rank, words.x, words.y+10)
-            //text('$' + financial(data[x].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
           }
           selected();
         }
@@ -93,22 +94,36 @@ function richList(){
           image(img[i], pic.x, pic.y, pic.size, pic.size);
           textSize(map(r, 0, 20, 50, 30));
           text('#' + data[i].rank, words.x, words.y+10)
-          //text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
         }
     }
 
 function selected(){
-  textAlign(LEFT);
-  fill(20)
-  tint(240, 255);
-  pic.x = (width-360) * (i / r)+200;
-  pic.size = map(r, 0, 20, 90, 60)*4
-  words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
-  image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-  textSize(map(r, 0, 20, 18, 6.75)*2);
-  text(data[i].name, words.x, words.y+200)
-  text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
-  i = x;
+  if (i > r/2) {
+    textAlign(RIGHT);
+    fill(20)
+    tint(240, 255);
+    pic.x = (width-360) * (i / r)+200;
+    pic.size = map(r, 0, 20, 90, 60)*4
+    words.x = pic.x-map(r, 0, 25, 400, 250) + pic.size-map(r, 0, 20, 150, 100);
+    image(img[i], pic.x, pic.y+200, pic.size, pic.size);
+    textSize(map(r, 0, 20, 18, 6.75)*2);
+    text(data[i].name, words.x, words.y+200)
+    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
+    i = x;
+  }
+  else{
+    textAlign(LEFT);
+    fill(20)
+    tint(240, 255);
+    pic.x = (width-360) * (i / r)+200;
+    pic.size = map(r, 0, 20, 90, 60)*4
+    words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
+    image(img[i], pic.x, pic.y+200, pic.size, pic.size);
+    textSize(map(r, 0, 20, 18, 6.75)*2);
+    text(data[i].name, words.x, words.y+200)
+    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
+    i = x;
+  }
 }
 
 
@@ -116,6 +131,7 @@ function selected(){
     if (data[i].realTimeWorth != null) {
       var num = Math.round(data[i].realTimeWorth/1000);
       total += num;
+      totalLong += Math.round(num*1000000);
     }
     else{
       i++;
@@ -124,12 +140,18 @@ function selected(){
   fill(20);
   textAlign(CENTER)
   if (total > 1000) {
+    usaWage = totalLong / 49,192;
     textSize(map(total, 1000, 2000, 100, 300))
     text('$' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
+    textSize(map(total, 1000, 2000, 50, 150))
+    text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
   }
   else{
+    usaWage = totalLong / 49,192;
     textSize(map(total, 0, 1000, 50, 100))
     text('$' + precise(total) + ' BILLION', width/2, height/1.5)
+    textSize(map(total, 0, 1000, 25, 50))
+    text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
   }
 }
 
