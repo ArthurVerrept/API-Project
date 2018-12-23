@@ -106,7 +106,7 @@ function selected(){
     pic.size = map(r, 0, 20, 90, 60)*4
     words.x = pic.x-map(r, 0, 25, 400, 250) + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-    textSize(map(r, 0, 20, 18, 6.75)*2);
+    textSize(25);
     text(data[i].name, words.x, words.y+200)
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
     i = x;
@@ -119,7 +119,7 @@ function selected(){
     pic.size = map(r, 0, 20, 90, 60)*4
     words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-    textSize(map(r, 0, 20, 18, 6.75)*2);
+    textSize(25);
     text(data[i].name, words.x, words.y+200)
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
     i = x;
