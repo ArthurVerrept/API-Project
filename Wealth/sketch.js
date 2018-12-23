@@ -7,14 +7,15 @@ var img = [];
 
 var words = {
   x: 0,
-  y: 20,
+  y: 58,
   size: 0
 };
 
 var pic = {
   x: 0,
-  y: 50
-}
+  y: 50,
+  size: 90
+};
 
 function preload(){
   createCanvas(1280, 720)
@@ -26,7 +27,7 @@ function setup() {
   upper = createSlider(0, 100, 10);
   textAlign(CENTER)
   imageMode(CENTER)
-  for (var i = 0; i < 12; i++) {
+  for (var i = 0; i < 25; i++) {
     img[i] = loadImage("images/" + data[i].name + ".jpg");
   }
 }
@@ -46,25 +47,40 @@ return Number.parseFloat(x).toFixed(2);
 
 function richList(){
   background(240);
-  var textHeight = 20;
   var r = upper.value();
-  fill(255, 0, 0);
-  let total = 0;
+  var total = 0;
+  fill(240);
   for (var i = 0; i < r; i++) {
     words.x = (width - 10) * (i / r)+60;
     pic.x = (width - 10) * (i / r)+60;
+    pic.size = map(r, 0, 100, 90, 50)
     if (r <= 20) {
-      if (data[i].name.length < 11) {
-        image(img[i], pic.x, pic.y, 100, 100);
-        textSize(map(r, 0, 20, 20, 7.5));
+      if (data[i].name.length <= 11) {
+        image(img[i], pic.x, pic.y, pic.size, pic.size);
+        textSize(map(r, 0, 20, 18, 6.75));
         text(data[i].name, words.x, words.y)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y*2 - map(r, 0, 25, 0,12));
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
       }
       else{
-        image(img[i], (width - 10) * (i / r)+60, textHeight*2+10, 100, 100);
-        textSize(map(r, 0, 20, 20, 7.5));
-        text(data[i].lastName, (width - 10) * (i / r)+60, textHeight)
-        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', (width - 10) * (i / r)+60, textHeight*2 - map(r, 0, 25, 0,12));
+        console.log(data[i])
+        image(img[i], pic.x, pic.y, pic.size, pic.size);
+        textSize(map(r, 0, 20, 18, 6.75));
+        text(data[i].lastName, words.x, words.y)
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+      }
+    }
+    if (r <= 40 && r > 20) {
+      if (data[i].name.length < 11) {
+        image(img[i], pic.x, pic.y, pic.size, pic.size);
+        textSize(map(r, 0, 20, 18, 6.75));
+        text(data[i].name, words.x, words.y)
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+118 - map(r, 0, 25, 0,12));
+      }
+      else{
+        image(img[i], pic.x, pic.y, pic.size, pic.size);
+        textSize(map(r, 0, 20, 18, 6.75));
+        text(data[i].lastName, words.x, words.y)
+        text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+118 - map(r, 0, 25, 0,12));
       }
     }
   }
@@ -80,6 +96,7 @@ function richList(){
       i++;
     }
   }
+  fill(20);
   textAlign(CENTER)
   if (total > 1000) {
     textSize(map(total, 1000, 2000, 15, 25))
