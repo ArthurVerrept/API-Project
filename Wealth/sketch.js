@@ -4,6 +4,7 @@ var data = [];
 var temp =[];
 var upper;
 var img = [];
+var current;
 
 var words = {
   x: 0,
@@ -25,8 +26,12 @@ function preload(){
 
 function setup() {
   upper = createSlider(0, 100, 10);
-  textAlign(CENTER)
-  imageMode(CENTER)
+  textAlign(CENTER);
+  imageMode(CENTER);
+  ellipseMode(CENTER);
+  rectMode(CENTER);
+  noStroke();
+
   for (var i = 0; i < 30; i++) {
     img[i] = loadImage("images/" + data[i].name + ".jpg");
   }
@@ -50,18 +55,42 @@ function richList(){
   background(240);
   var r = upper.value();
   var total = 0;
+  var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
-    if (r <= 20) {
       words.x = (width-80) * (i / r)+80;
       pic.x = (width-80) * (i / r)+80;
       pic.size = map(r, 0, 20, 90, 60)
-      if (data[i].name.length <= 11) {
-        if (checkMouse(pic.x, pic.y, pic.size, img[i]) == true) {
+        if (checkMouse(pic.x, pic.y, pic.size) == true) {
+          background(240)
+          for (var x = 0; x < i; x++) {
+            words.x = (width-80) * (x / r)+80;
+            pic.x = (width-80) * (x / r)+80;
+            pic.size = map(r, 0, 20, 90, 60)
+            image(img[x], pic.x, pic.y, pic.size*0.5, pic.size*0.5);
+            textSize(map(r, 0, 20, 18, 6.75)*1.5);
+            text(data[i].name, words.x, words.y)
+            text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+          }
+
+          words.x = (width-80) * (i / r)+80;
+          pic.x = (width-80) * (i / r)+80;
+          pic.size = map(r, 0, 20, 90, 60)
           image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
           textSize(map(r, 0, 20, 18, 6.75)*1.5);
           text(data[i].name, words.x, words.y)
           text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+
+          for (var x = i+1; x < r; x++) {
+            words.x = (width-80) * (x / r)+80;
+            pic.x = (width-80) * (x / r)+80;
+            pic.size = map(r, 0, 20, 90, 60)
+            image(img[x], pic.x, pic.y, pic.size*0.5, pic.size*0.5);
+            textSize(map(r, 0, 20, 18, 6.75)*1.5);
+            text(data[i].name, words.x, words.y)
+            text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
+          }
+          i= x;
         }
         else{
           image(img[i], pic.x, pic.y, pic.size, pic.size);
@@ -69,25 +98,8 @@ function richList(){
           text(data[i].name, words.x, words.y)
           text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
         }
-
-
-      }
-      else{
-        if (checkMouse(pic.x, pic.y, pic.size, img[i]) == true) {
-          image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
-          textSize(map(r, 0, 20, 18, 6.75)*1.5);
-          text(data[i].name, words.x, words.y)
-          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
-        }
-        else{
-          image(img[i], pic.x, pic.y, pic.size, pic.size);
-          textSize(map(r, 0, 20, 18, 6.75));
-          text(data[i].name, words.x, words.y)
-          text('$' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' B', words.x, words.y+18 - map(r, 0, 25, 0,12));
-        }
-      }
     }
-  }
+
 
 
 
@@ -112,9 +124,8 @@ function richList(){
   }
 }
 
-function checkMouse(){
+function checkMouse(ynn){
   if(mouseX < pic.x + (pic.size / 2) && mouseX > pic.x - (pic.size / 2) && mouseY < pic.y + (pic.size / 2) && mouseY > pic.y - (pic.size / 2)){
-    image(img[i], pic.x, pic.y, pic.size*1.5, pic.size*1.5);
     return true;
   }
   else{
