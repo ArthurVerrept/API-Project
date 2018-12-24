@@ -37,7 +37,7 @@ function setup() {
   for (var i = 0; i < 20; i++) {
     img[i] = loadImage("images/" + data[i].name + ".jpg");
   }
-  for (var i = 0; i < 9; i++) {
+  for (var i = 0; i < 20; i++) {
     flags[i] = loadImage("Flags/" + data[i].country + ".png");
   }
 }
@@ -56,6 +56,7 @@ return Number.parseFloat(x).toFixed(2);
 }
 
 function richList(){
+  console.log(data)
   background(240);
   var r = upper.value();
   var total = 0;
@@ -64,7 +65,6 @@ function richList(){
   var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
-      console.log(i + data[i].industry)
       words.x = (width-80) * (i / r)+80;
       pic.x = (width-80) * (i / r)+80;
       pic.size = map(r, 0, 20, 90, 60)
@@ -106,9 +106,13 @@ function selected(){
     pic.size = map(r, 0, 20, 90, 60)*4
     words.x = pic.x-map(r, 0, 25, 400, 250) + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
+    image(flags[i], words.x-32, pic.y+ 110)
     textSize(25);
-    text(data[i].name, words.x, words.y+200)
-    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
+    text(data[i].name, words.x, words.y+170)
+    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+    textSize(20);
+    text('Title: ' + data[i].title, words.x, words.y+225);
+    text('Source of wealth: ' + data[i].source, words.x, words.y+250);
     i = x;
   }
   else{
@@ -119,9 +123,13 @@ function selected(){
     pic.size = map(r, 0, 20, 90, 60)*4
     words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
+    image(flags[i], words.x+32, pic.y+120);
     textSize(25);
-    text(data[i].name, words.x, words.y+200)
-    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+240 - map(r, 0, 25, 0,12));
+    text(data[i].name, words.x, words.y+170)
+    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+    textSize(20);
+    text('Title: ' + data[i].title, words.x, words.y+225);
+    text('Source of wealth: ' + data[i].source, words.x, words.y+250);
     i = x;
   }
 }
