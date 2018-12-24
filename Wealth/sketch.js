@@ -7,8 +7,6 @@ var img = [];
 var current, usaWage, hunger, gdp;
 var flags = [];
 
-
-
 var words = {
   x: 0,
   y: 50,
@@ -33,7 +31,6 @@ function setup() {
   imageMode(CENTER);
   ellipseMode(CENTER);
   rectMode(CENTER);
-  noStroke();
 
   for (var i = 0; i < 20; i++) {
     img[i] = loadImage("images/" + data[i].name + ".jpg");
@@ -57,67 +54,38 @@ return Number.parseFloat(x).toFixed(2);
 }
 
 function richList(){
-  console.log(data)
   background(240);
   var r = upper.value();
   var total = 0;
   var totalLong = 0;
-
   var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
-      words.x = (width-80) * (i / r)+80;
-      pic.x = (width-80) * (i / r)+80;
-      pic.size = map(r, 0, 20, 90, 60)
+      setSize(i, r);
         if (checkMouse(pic.x, pic.y, pic.size) == true) {
           background(240);
-          fill(240,240,240, 150)
-          //tint(240, 126);
           for (var x = 0; x < i; x++) {
-            words.x = (width-80) * (x / r)+80;
-            pic.x = (width-80) * (x / r)+80;
-            pic.size = map(r, 0, 20, 90, 60)
-            image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
-            textSize(map(r, 0, 20, 50, 30)*0.7);
-            text('#' + data[x].rank, words.x, words.y+10)
+            setSize(x, r);
+            displayAll(x, r, 0.7);
           }
           for (var x = i+1; x < r; x++) {
-            words.x = (width-80) * (x / r)+80;
-            pic.x = (width-80) * (x / r)+80;
-            pic.size = map(r, 0, 20, 90, 60)
-            image(img[x], pic.x, pic.y, pic.size*0.7, pic.size*0.7);
-            textSize(map(r, 0, 20, 50, 30)*0.7);
-            text('#' + data[x].rank, words.x, words.y+10)
+            setSize(x, r);
+            displayAll(x, r, 0.7);
           }
           selected();
         }
         else{
-          image(img[i], pic.x, pic.y, pic.size, pic.size);
-          textSize(map(r, 0, 20, 50, 30));
-          text('#' + data[i].rank, words.x, words.y+10)
+          displayAll(i, r, 1);
         }
     }
 
 function selected(){
   if (i > r/2) {
     textAlign(RIGHT);
-    fill(20)
-    tint(240, 255);
     pic.x = (width-360) * (i / r)+200;
     pic.size = map(r, 0, 20, 90, 60)*4
-    words.x = pic.x-map(r, 0, 25, 400, 250) + pic.size-map(r, 0, 20, 150, 100);
-    image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-    image(flags[i], words.x-32, pic.y+ 120)
-    textSize(17);
-    text(data[i].country, words.x-70, pic.y+125)
-    textSize(25);
-    text(data[i].name + ', ' + data[i].age, words.x, words.y+170)
-    fill(0, 153, 0);
-    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
-    fill(20);
-    textSize(20);
-    text('Title: ' + data[i].title, words.x, words.y+225);
-    text('Source of wealth: ' + data[i].source, words.x, words.y+250);
+    words.x = pic.x - pic.size/2 - 20;
+    displaySelected(i, r, 42);
     i = x;
   }
   else{
@@ -126,19 +94,8 @@ function selected(){
     tint(240, 255);
     pic.x = (width-360) * (i / r)+200;
     pic.size = map(r, 0, 20, 90, 60)*4
-    words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
-    image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-    image(flags[i], words.x+32, pic.y+120);
-    textSize(17);
-    text(data[i].country, words.x+70, pic.y+125)
-    textSize(25);
-    text(data[i].name + ', ' + data[i].age, words.x, words.y+170)
-    fill(0, 153, 0);
-    text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
-    fill(20);
-    textSize(20);
-    text('Title: ' + data[i].title, words.x, words.y+225);
-    text('Source of wealth: ' + data[i].source, words.x, words.y+250);
+    words.x = pic.x + pic.size/2 + 20;
+    displaySelected(i, r, -42)
     i = x;
   }
 }
@@ -156,22 +113,27 @@ function selected(){
       i++;
     }
   }
-  fill(map(total, 0, 1300, 230, 10));
+  fill(20);
   textAlign(CENTER)
   if (total > 1000) {
+    gdp = (totalLong/ 2622000000000)*100;
     usaWage = totalLong / 49192;
     hunger = totalLong / 3000000000;
     textSize(map(total, 1000, 2000, 100, 200));
     text('TOTAL: $' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
+    fill(map(mouseY, 0, height, 200, 20));
     textSize(map(mouseY, 0, height, 30, 60));
     text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60);
     if (mouseY > height/2) {
-      textSize(map(mouseY, height/2, height, 60, 30));
+      fill(map(mouseY, height/2, height, 20, 200));
+      textSize(map(mouseY, height/2, height, 60, 35));
     }
     else{
+      fill(map(mouseY, 0, height/2, 200, 20));
       textSize(map(mouseY, 0, height/2, 30, 60));
     }
     text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
+    fill(map(mouseY, height/2, height, 20, 200));
     textSize(map(mouseY, 0, height, 60, 30));
     text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
   }
@@ -193,6 +155,35 @@ function selected(){
     textSize(map(mouseY, 0, height, 70, 20));
     text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
   }
+}
+
+function displaySelected(selected, totalAmount, move){
+  fill(20)
+  tint(240, 255);
+  image(img[selected], pic.x, pic.y+200, pic.size, pic.size);
+  image(flags[selected], words.x - move, pic.y + 120)
+  textSize(17);
+  text(data[selected].country, words.x-move*2, pic.y+125)
+  textSize(25);
+  text(data[selected].name + ', ' + data[selected].age, words.x, words.y+170)
+  fill(0, 153, 0);
+  text('Net Worth: $' + financial(data[selected].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+  fill(20);
+  textSize(20);
+  text('Title: ' + data[selected].title, words.x, words.y+225);
+  text('Source of wealth: ' + data[selected].source, words.x, words.y+250);
+}
+
+function displayAll(current, totalAmount, multiple){
+  image(img[current], pic.x, pic.y, pic.size*multiple, pic.size*multiple);
+  textSize(map(totalAmount, 0, 20, 50, 30)*multiple);
+  text('#' + data[current].rank, words.x, words.y+10)
+}
+
+function setSize(current, totalAmount){
+  words.x = (width-80) * (current / totalAmount)+80;
+  pic.x = (width-80) * (current / totalAmount)+80;
+  pic.size = map(totalAmount, 0, 20, 90, 60)
 }
 
 function checkMouse(ynn){
