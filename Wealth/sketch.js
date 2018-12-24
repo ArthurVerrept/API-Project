@@ -4,8 +4,9 @@ var data = [];
 var temp =[];
 var upper;
 var img = [];
-var current;
+var current, usaWage, hunger, gdp;
 var flags = [];
+
 
 
 var words = {
@@ -61,7 +62,7 @@ function richList(){
   var r = upper.value();
   var total = 0;
   var totalLong = 0;
-  var usaWage = 0;
+
   var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
@@ -146,8 +147,10 @@ function selected(){
   for (var i = 0; i < r; i++) {
     if (data[i].realTimeWorth != null) {
       var num = Math.round(data[i].realTimeWorth/1000);
+      console.log(num)
       total += num;
-      totalLong += Math.round(num*1000000);
+      totalLong += num*1000000000;
+      console.log(totalLong)
     }
     else{
       i++;
@@ -156,18 +159,39 @@ function selected(){
   fill(map(total, 0, 1300, 230, 10));
   textAlign(CENTER)
   if (total > 1000) {
-    usaWage = totalLong / 49,192;
-    textSize(map(total, 1000, 2000, 100, 200))
+    usaWage = totalLong / 49192;
+    hunger = totalLong / 3000000000;
+    textSize(map(total, 1000, 2000, 100, 200));
     text('TOTAL: $' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
-    textSize(map(total, 1000, 2000, 50, 150))
-    text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
+    textSize(map(mouseY, 0, height, 30, 60));
+    text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60);
+    if (mouseY > height/2) {
+      textSize(map(mouseY, height/2, height, 60, 30));
+    }
+    else{
+      textSize(map(mouseY, 0, height/2, 30, 60));
+    }
+    text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
+    textSize(map(mouseY, 0, height, 60, 30));
+    text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
   }
   else{
-    usaWage = totalLong / 49,192;
+    gdp = (totalLong/ 2622000000000)*100;
+    usaWage = totalLong / 49192;
+    hunger = totalLong / 3000000000;
     textSize(map(total, 0, 1000, 50, 100))
     text('TOTAL: $' + precise(total) + ' BILLION', width/2, height/1.5)
-    textSize(map(total, 0, 1000, 25, 50))
-    text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
+    textSize(map(mouseY, 0, height, 20, 70));
+    text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60)
+    if (mouseY > height/2) {
+      textSize(map(mouseY, height/2, height, 60, 30));
+    }
+    else{
+      textSize(map(mouseY, 0, height/2, 30, 60));
+    }
+    text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
+    textSize(map(mouseY, 0, height, 70, 20));
+    text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
   }
 }
 
