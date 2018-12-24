@@ -4,8 +4,9 @@ var data = [];
 var temp =[];
 var upper;
 var img = [];
-var current, usaWage, hunger, gdp;
+var current, usaWage, hunger, gdp, total, totalLong;
 var flags = [];
+
 
 var words = {
   x: 0,
@@ -45,53 +46,47 @@ function draw() {
 richList();
 }
 
-function precise(x) {
-  return Number.parseFloat(x).toPrecision(4);
-}
 
-function financial(x) {
-return Number.parseFloat(x).toFixed(2);
-}
 
 function richList(){
   background(240);
   var r = upper.value();
   var total = 0;
   var totalLong = 0;
-  var int = 0;
   fill(240);
   for (var i = 0; i < r; i++) {
-      setSize(i, r);
-        if (checkMouse(pic.x, pic.y, pic.size) == true) {
-          background(240);
-          for (var x = 0; x < i; x++) {
-            setSize(x, r);
-            displayAll(x, r, 0.7);
-          }
-          for (var x = i+1; x < r; x++) {
-            setSize(x, r);
-            displayAll(x, r, 0.7);
-          }
-          selected();
+    setSize(i, r);
+      if (checkMouse(pic.x, pic.y, pic.size) == true) {
+        background(240);
+        for (var x = 0; x < i; x++) {
+          setSize(x, r);
+          displayAll(x, r, 0.7);
         }
-        else{
-          displayAll(i, r, 1);
+        for (var x = i+1; x < r; x++) {
+          setSize(x, r);
+          displayAll(x, r, 0.7);
         }
+      selected();
+      }
+      else{
+        displayAll(i, r, 1);
+      }
+  }
+
+
+
+  function selected(){
+    if (i > r/2) {
+      setSide('right', i, r);
+      displaySelected(i, r, 30);
+      i = x;
     }
-
-function selected(){
-  if (i > r/2) {
-    setSide('right', i, r);
-    displaySelected(i, r, 30);
-    i = x;
+    else{
+      setSide('left', i, r);
+      displaySelected(i, r, -30)
+      i = x;
+    }
   }
-  else{
-    setSide('left', i, r);
-    displaySelected(i, r, -30)
-    i = x;
-  }
-}
-
 
   for (var i = 0; i < r; i++) {
     if (data[i].realTimeWorth != null) {
@@ -103,14 +98,22 @@ function selected(){
       i++;
     }
   }
+  if (total > 1000) {
+  createTotals(total, totalLong, 'TRILLION', 1000);
+  }
+  else{
+  createTotals(total, totalLong, 'BILLION', 1);
+  }
+}
+
+function createTotals(t, tL, scale, multiple){
   fill(20);
   textAlign(CENTER)
-  if (total > 1000) {
-    gdp = (totalLong/ 2622000000000)*100;
-    usaWage = totalLong / 49192;
-    hunger = totalLong / 3000000000;
-    textSize(map(total, 1000, 2000, 100, 200));
-    text('TOTAL: $' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
+  gdp = (tL/ 2622000000000)*100;
+  usaWage = tL / 49192;
+  hunger = tL / 3000000000;
+    textSize(map(t, 1000, 2000, 100, 200));
+    text('TOTAL: $' + precise(t/multiple) + scale, width/2, height/1.5)
     fill(map(mouseY, 0, height, 200, 20));
     textSize(map(mouseY, 0, height, 30, 60));
     text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60);
@@ -127,25 +130,7 @@ function selected(){
     textSize(map(mouseY, 0, height, 60, 30));
     text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
   }
-  else{
-    gdp = (totalLong/ 2622000000000)*100;
-    usaWage = totalLong / 49192;
-    hunger = totalLong / 3000000000;
-    textSize(map(total, 0, 1000, 50, 100))
-    text('TOTAL: $' + precise(total) + ' BILLION', width/2, height/1.5)
-    textSize(map(mouseY, 0, height, 20, 70));
-    text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60)
-    if (mouseY > height/2) {
-      textSize(map(mouseY, height/2, height, 60, 30));
-    }
-    else{
-      textSize(map(mouseY, 0, height/2, 30, 60));
-    }
-    text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
-    textSize(map(mouseY, 0, height, 70, 20));
-    text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
-  }
-}
+
 
 function setSide(imgRL, selected, totalAmount){
   if (imgRL == 'right') {
@@ -199,4 +184,12 @@ function checkMouse(ynn){
   else{
     return false;
   }
+}
+
+function precise(x) {
+  return Number.parseFloat(x).toPrecision(4);
+}
+
+function financial(x) {
+return Number.parseFloat(x).toFixed(2);
 }
