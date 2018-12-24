@@ -106,10 +106,14 @@ function selected(){
     pic.size = map(r, 0, 20, 90, 60)*4
     words.x = pic.x-map(r, 0, 25, 400, 250) + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
-    image(flags[i], words.x-32, pic.y+ 110)
+    image(flags[i], words.x-32, pic.y+ 120)
+    textSize(17);
+    text(data[i].country, words.x-70, pic.y+125)
     textSize(25);
     text(data[i].name, words.x, words.y+170)
+    fill(0, 153, 0);
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+    fill(20);
     textSize(20);
     text('Title: ' + data[i].title, words.x, words.y+225);
     text('Source of wealth: ' + data[i].source, words.x, words.y+250);
@@ -124,9 +128,13 @@ function selected(){
     words.x = pic.x + pic.size-map(r, 0, 20, 150, 100);
     image(img[i], pic.x, pic.y+200, pic.size, pic.size);
     image(flags[i], words.x+32, pic.y+120);
+    textSize(17);
+    text(data[i].country, words.x+70, pic.y+125)
     textSize(25);
     text(data[i].name, words.x, words.y+170)
+    fill(0, 153, 0);
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+    fill(20);
     textSize(20);
     text('Title: ' + data[i].title, words.x, words.y+225);
     text('Source of wealth: ' + data[i].source, words.x, words.y+250);
@@ -149,15 +157,15 @@ function selected(){
   textAlign(CENTER)
   if (total > 1000) {
     usaWage = totalLong / 49,192;
-    textSize(map(total, 1000, 2000, 100, 300))
-    text('$' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
+    textSize(map(total, 1000, 2000, 100, 200))
+    text('TOTAL: $' + precise(total/1000) + ' TRILLION', width/2, height/1.5)
     textSize(map(total, 1000, 2000, 50, 150))
     text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
   }
   else{
     usaWage = totalLong / 49,192;
     textSize(map(total, 0, 1000, 50, 100))
-    text('$' + precise(total) + ' BILLION', width/2, height/1.5)
+    text('TOTAL: $' + precise(total) + ' BILLION', width/2, height/1.5)
     textSize(map(total, 0, 1000, 25, 50))
     text(Math.round(usaWage) + ' average American yearly salaries', width/2, height/1.5+60)
   }
