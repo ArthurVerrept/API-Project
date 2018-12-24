@@ -81,21 +81,13 @@ function richList(){
 
 function selected(){
   if (i > r/2) {
-    textAlign(RIGHT);
-    pic.x = (width-360) * (i / r)+200;
-    pic.size = map(r, 0, 20, 90, 60)*4
-    words.x = pic.x - pic.size/2 - 20;
-    displaySelected(i, r, 42);
+    setSide('right', i, r);
+    displaySelected(i, r, 30);
     i = x;
   }
   else{
-    textAlign(LEFT);
-    fill(20)
-    tint(240, 255);
-    pic.x = (width-360) * (i / r)+200;
-    pic.size = map(r, 0, 20, 90, 60)*4
-    words.x = pic.x + pic.size/2 + 20;
-    displaySelected(i, r, -42)
+    setSide('left', i, r);
+    displaySelected(i, r, -30)
     i = x;
   }
 }
@@ -104,10 +96,8 @@ function selected(){
   for (var i = 0; i < r; i++) {
     if (data[i].realTimeWorth != null) {
       var num = Math.round(data[i].realTimeWorth/1000);
-      console.log(num)
       total += num;
       totalLong += num*1000000000;
-      console.log(totalLong)
     }
     else{
       i++;
@@ -157,13 +147,29 @@ function selected(){
   }
 }
 
+function setSide(imgRL, selected, totalAmount){
+  if (imgRL == 'right') {
+    textAlign(RIGHT);
+    pic.x = (width-360) * (selected / totalAmount)+200;
+    pic.size = map(totalAmount, 0, 20, 90, 60)*4
+    words.x = pic.x - pic.size/2 - 20;
+  }
+  else if (imgRL == 'left'){
+    textAlign(LEFT);
+    pic.x = (width-360) * (selected / totalAmount)+200;
+    pic.size = map(totalAmount, 0, 20, 90, 60)*4
+    words.x = pic.x + pic.size/2 + 20;
+  }
+
+}
+
 function displaySelected(selected, totalAmount, move){
   fill(20)
   tint(240, 255);
   image(img[selected], pic.x, pic.y+200, pic.size, pic.size);
   image(flags[selected], words.x - move, pic.y + 120)
   textSize(17);
-  text(data[selected].country, words.x-move*2, pic.y+125)
+  text(data[selected].country, words.x-move*2.2, pic.y+125)
   textSize(25);
   text(data[selected].name + ', ' + data[selected].age, words.x, words.y+170)
   fill(0, 153, 0);
