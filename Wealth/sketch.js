@@ -110,7 +110,7 @@ function selected(){
     textSize(17);
     text(data[i].country, words.x-70, pic.y+125)
     textSize(25);
-    text(data[i].name, words.x, words.y+170)
+    text(data[i].name + ', ' + data[i].age, words.x, words.y+170)
     fill(0, 153, 0);
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
     fill(20);
@@ -131,7 +131,7 @@ function selected(){
     textSize(17);
     text(data[i].country, words.x+70, pic.y+125)
     textSize(25);
-    text(data[i].name, words.x, words.y+170)
+    text(data[i].name + ', ' + data[i].age, words.x, words.y+170)
     fill(0, 153, 0);
     text('Net Worth: $' + financial(data[i].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
     fill(20);
@@ -153,7 +153,7 @@ function selected(){
       i++;
     }
   }
-  fill(20);
+  fill(map(total, 0, 1300, 230, 10));
   textAlign(CENTER)
   if (total > 1000) {
     usaWage = totalLong / 49,192;
