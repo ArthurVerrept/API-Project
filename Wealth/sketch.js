@@ -2,7 +2,6 @@
 var url = 'https://forbes400.herokuapp.com/api/forbes400?limit=100';
 var data = [];
 var temp =[];
-var upper;
 var img = [];
 var current, usaWage, hunger, gdp, total, totalLong;
 var flags = [];
@@ -20,6 +19,20 @@ var pic = {
   size: 90
 };
 
+var country = {
+  Mexico: 1150000000000,
+  Somalia: 7396000000,
+  UnitedKingdom: 2622000000000,
+  USA: 19390000000000,
+  Greece: 200000000000
+}
+
+
+//Creates params and assigns certain values
+var params = {
+amount: 10,
+};
+
 function preload(){
   createCanvas(1280, 720)
   data = loadJSON(url)
@@ -27,7 +40,7 @@ function preload(){
 
 
 function setup() {
-  upper = createSlider(0, 20, 10);
+
   textAlign(CENTER);
   imageMode(CENTER);
   ellipseMode(CENTER);
@@ -39,6 +52,23 @@ function setup() {
   for (var i = 0; i < 20; i++) {
     flags[i] = loadImage("Flags/" + data[i].country + ".png");
   }
+
+
+
+	//Creates new function in params called newLine
+ 	params.Country = function() {
+		//Calls Choice function to change value of countries gdp
+	  choice();
+	};
+
+
+	//Creates variable gui and assignes a new gui
+	var gui = new dat.GUI();
+
+	//Adds all the buttons and sliders to gui
+	gui.add(params, 'amount', 0, 20).name('Amount');
+  gui.add(params, 'Country', [ 'Mexico', 'Somalia', 'United Kingdom', 'USA', 'Greece' ] );
+  params.Country = 'USA';
 }
 
 
@@ -50,7 +80,7 @@ richList();
 
 function richList(){
   background(240);
-  var r = upper.value();
+  var r = params.amount;
   var total = 0;
   var totalLong = 0;
   fill(240);
@@ -106,10 +136,19 @@ function richList(){
   }
 }
 
+function choice(){
+  if (params.Country == 'Mexico')return country.Mexico;
+  else if (params.Country == 'Somalia')return country.Somalia;
+  else if (params.Country == 'United Kingdom')return country.UnitedKingdom;
+  else if (params.Country == 'USA')return country.USA;
+  else if (params.Country == 'Greece')return country.Greece;
+}
+
 function createTotals(t, tL, scale, multiple){
+  console.log(params.Country);
   fill(20);
   textAlign(CENTER)
-  gdp = (tL/ 2622000000000)*100;
+  gdp = (tL/ choice())*100;
   usaWage = tL / 49192;
   hunger = tL / 3000000000;
     textSize(map(t, 1000, 2000, 100, 200));
@@ -128,7 +167,7 @@ function createTotals(t, tL, scale, multiple){
     text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
     fill(map(mouseY, height/2, height, 20, 200));
     textSize(map(mouseY, 0, height, 60, 30));
-    text(precise(gdp) + "% of the UK's GDP", width/2, height/1.5+170);
+    text(precise(gdp) + "% of " + params.Country + "'s GDP", width/2, height/1.5+170);
   }
 
 
@@ -187,7 +226,7 @@ function checkMouse(ynn){
 }
 
 function precise(x) {
-  return Number.parseFloat(x).toPrecision(4);
+  return Number.parseFloat(x).toPrecision(5);
 }
 
 function financial(x) {
