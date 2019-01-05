@@ -6,7 +6,7 @@ var data = [];
 var img = [];
 var flags = [];
 //creating variables to use to make calculations
-var usaWage, hunger, gdp, total, totalLong;
+var usaWage, poverty, gdp, total, totalLong;
 
 //creates a "words" object with x, y and size
 var words = {
@@ -155,25 +155,34 @@ function richList(){
     }
   }
 
+  //this for loop loops through all the billionaires on screen and adds their net worth together
   for (var i = 0; i < r; i++) {
+    //some net worths were undefined so this if statement catches them
     if (data[i].realTimeWorth != null) {
-      var num = Math.round(data[i].realTimeWorth/1000);
-      total += num;
-      totalLong += num*1000000000;
+      //the variable total adds up the net worths of the billionaires on screen and saves the number in billions by dividing by 1000
+      total +=  Math.round(data[i].realTimeWorth/1000);
+      //the totalLong is the same as total but multiplied by 1000000 because data from API is in multiples of millions
+      totalLong += Math.round(data[i].realTimeWorth*1000000);
     }
+    //if real time net worth is undefined move on to next billionaire
     else{
       i++;
     }
   }
+  //if the total is greater than one trillion (1000 billions)
   if (total > 1000) {
-  createTotals(total, totalLong, 'TRILLION', 1000);
+    //then call createTotals with total, totalLong, 'TRILLION', and the "scale" to divide the number by, to make is easily legible
+    displayTotals(total, totalLong, 'TRILLION', 1000);
   }
   else{
-  createTotals(total, totalLong, 'BILLION', 1);
+    //if smaller than 1 trillion same function call but dividing by 1
+    displayTotals(total, totalLong, 'BILLION', 1);
   }
 }
 
+//this function checks which country is selected in the GUI and returns the corresponding data from country object
 function choice(){
+  //for example if you selec mexico this if statement catches that and returns the value of mexico's GDP from object
   if (params.Country == 'Mexico')return country.Mexico;
   else if (params.Country == 'Somalia')return country.Somalia;
   else if (params.Country == 'United Kingdom')return country.UnitedKingdom;
@@ -181,44 +190,68 @@ function choice(){
   else if (params.Country == 'Greece')return country.Greece;
 }
 
-function createTotals(t, tL, scale, multiple){
-  console.log(params.Country);
+//this function displays totals on screen and does some simple calculations
+//t = total, tL = totalLong, scale = BILLION/TRILLION, multiple = 1/1000
+function displayTotals(t, tL, scale, multiple){
   fill(20);
+  //re-aligns text to center since setSide function aligns it left or right
   textAlign(CENTER)
+  //set gdp variable to equal totalLong/countryGDP *100 to give a percentage
   gdp = (tL/ choice())*100;
+  //sets usawage to equal totalLong/ usa average wage
   usaWage = tL / 49192;
-  hunger = tL / 3000000000;
+  //sets poverty to totallong / amount of people in poverty
+  poverty = tL / 3000000000;
+  //maps textsize of billionaires totals to size of total
   textSize(map(t, 100, 1500, 25, 125));
-  text('TOTAL: $' + precise(t/multiple) + scale, width/2, height/1.5)
+  //displays text and calls financial function with total/multiple to give legible number
+  text('TOTAL: $' + financial(t/multiple) + ' ' + scale, width/2, height/1.5)
+
+  //ALL THREE NEXT MAPS ARE STAGGERES TO GIVE THE TEXT SCROLL EFFECT
+  //fill and colour are MAPPED to get bigger and darker/ smaller and lighter on mouseY for the first line of text after total
   fill(map(mouseY, 0, height, 200, 20));
   textSize(map(mouseY, 0, height, 30, 60));
-  text('$' + precise(hunger) + ' For all 3 billion in poverty', width/2, height/1.5+60);
+  //Displays poverty amount and calls financial to set it to always have 2 decimal places
+  text('$' + financial(poverty) + ' For all 3 billion in poverty', width/2, height/1.5+60);
+    //these fill and textsize functions only apply to the middle line of text and make it get bigger the closer the mouse is to the center
+    //these if statements simply cutoff the map function from going further than the bounds I set
     if (mouseY > height/2) {
+      //fill and textsize mapped to mouseY between height/2 and height
       fill(map(mouseY, height/2, height, 20, 200));
       textSize(map(mouseY, height/2, height, 60, 35));
     }
     else{
+      //fill and textsize mapped to mouseY between 0 and height/2
       fill(map(mouseY, 0, height/2, 200, 20));
       textSize(map(mouseY, 0, height/2, 30, 60));
     }
+    //we then display that text rounding the salaries to the nearest whole number
     text(Math.round(usaWage) + ' Average American yearly salaries', width/2, height/1.5+110)
+    //the last line is again mapped to mouseY but the opposite of the first line
     fill(map(mouseY, height/2, height, 20, 200));
     textSize(map(mouseY, 0, height, 60, 30));
-    text(precise(gdp) + "% of " + params.Country + "'s GDP", width/2, height/1.5+170);
+    //the textfor the third line is then displayed using the selected country name from the list
+    text(financial(gdp) + "% of " + params.Country + "'s GDP", width/2, height/1.5+170);
   }
 
-
+//this function sets the text to either side of the selected billionaire
+//imgRL = right/left, selected = location in loop of selected billionair, totalAmount = value on slider
 function setSide(imgRL, selected, totalAmount){
+  //if statement checks if text should be either on the right or the left
   if (imgRL == 'right') {
     textAlign(RIGHT);
+    //uses pic.x and pic.size to assign the x location of the words according to where the picture is
     pic.x = (width-360) * (selected / totalAmount)+200;
     pic.size = map(totalAmount, 0, 20, 90, 60)*4
+    //words.x is then the pic.x - pic.size since the text need to be to the left of the image
     words.x = pic.x - pic.size/2 - 20;
   }
   else if (imgRL == 'left'){
     textAlign(LEFT);
+    //uses pic.x and pic.size to assign the x location of the words according to where the picture is
     pic.x = (width-360) * (selected / totalAmount)+200;
     pic.size = map(totalAmount, 0, 20, 90, 60)*4
+    //words.x is then the pic.x + pic.size since the text need to be to the right of the image
     words.x = pic.x + pic.size/2 + 20;
   }
 
@@ -260,10 +293,6 @@ function checkMouse(ynn){
   else{
     return false;
   }
-}
-
-function precise(x) {
-  return Number.parseFloat(x).toPrecision(5);
 }
 
 function financial(x) {
