@@ -148,7 +148,7 @@ function richList(){
       //this calls a function to set the side of the text in relation to text
       setSide('left', i, r);
       //this calls a function to display image and text in correct location
-      displaySelected(i, r, -30)
+      displaySelected(i, r, -30);
       //this sets the the overall counter to the value of the selected image so
       //that the images will draw from the point after the selected one
       i = x;
@@ -254,47 +254,73 @@ function setSide(imgRL, selected, totalAmount){
     //words.x is then the pic.x + pic.size since the text need to be to the right of the image
     words.x = pic.x + pic.size/2 + 20;
   }
-
 }
 
+//this function displays the selected image and info bigger and in a diiferent place
+//selected = location of selected in loop, totalAmount = slider value, move = 30/-30 depending on which side the text needs to be on
+//All use pic.y or words.y to stagger text next to image
 function displaySelected(selected, totalAmount, move){
   fill(20)
-  tint(240, 255);
+  //displaying images using pic.x pic.y and pic.size which has been set in setSize function
+  //move is either 30 || -30 depending on which side of image the text should be
   image(img[selected], pic.x, pic.y+200, pic.size, pic.size);
-  image(flags[selected], words.x - move, pic.y + 120)
+  image(flags[selected], words.x - move, pic.y + 120);
   textSize(17);
-  text(data[selected].country, words.x-move*2.2, pic.y+125)
+  //displaying country name from API with words.x, pic.y also set up in setSize and subtracting move
+  text(data[selected].country, words.x-move*2.2, pic.y+125);
   textSize(25);
-  text(data[selected].name + ', ' + data[selected].age, words.x, words.y+170)
+  //displaying billionaires name and age from API with words.x, and words.y
+  text(data[selected].name + ', ' + data[selected].age, words.x, words.y+170);
+  //making net worth fill green
   fill(0, 153, 0);
+  //displays text of net worth using realTimeWorth from API and showing as billions
   text('Net Worth: $' + financial(data[selected].realTimeWorth * 1000000/1000000000) + ' BILLION', words.x, words.y+200);
+  //resetting fill to black and lowering textsize for less important features
   fill(20);
   textSize(20);
+  //displays text of title from API
   text('Title: ' + data[selected].title, words.x, words.y+225);
+  //displays source of wealth from API
   text('Source of wealth: ' + data[selected].source, words.x, words.y+250);
 }
 
+//this function displays all the images and their rank on top of them
+//current = loaction in loop, totalAmount = amount on slider, multiple = scale of image and text (0.7/1)
 function displayAll(current, totalAmount, multiple){
+  //image displayed and size multiplied by multiple to choose the size depending on whether something is selected or not
   image(img[current], pic.x, pic.y, pic.size*multiple, pic.size*multiple);
+  //textsize mapped to the total amount on slider, and then multipled by multiple to set size
   textSize(map(totalAmount, 0, 20, 50, 30)*multiple);
-  text('#' + data[current].rank, words.x, words.y+10)
+  //displays text using data from API stored in data array
+  text('#' + data[current].rank, words.x, words.y+10);
 }
 
+//setSize is used to set location and size of text and images
 function setSize(current, totalAmount){
+  //the +-80 makes a 80 pixel border around the images
+  //the current location in loop is divided by the amount on slider to give a decimal percentage of position on screen
+  //this is then multiplied by width to get an actual pixel position
+  //both done for words.x and pic.x
   words.x = (width-80) * (current / totalAmount)+80;
   pic.x = (width-80) * (current / totalAmount)+80;
+  //pic.size is mapped totalAmount to set size acording to how many billionaires on screen
   pic.size = map(totalAmount, 0, 20, 90, 60)
 }
 
-function checkMouse(ynn){
+//this function checks if the mouse is over the current image being drawn
+function checkMouse(){
+  //this if statement checks if mouseX & mouseY is within the x and y boundries of image being drawn
   if(mouseX < pic.x + (pic.size / 2) && mouseX > pic.x - (pic.size / 2) && mouseY < pic.y + (pic.size / 2) && mouseY > pic.y - (pic.size / 2)){
+    //if so returns true
     return true;
   }
   else{
+    //else returns false
     return false;
   }
 }
 
+//this function gets called with x as number to return that number to two decimal points
 function financial(x) {
 return Number.parseFloat(x).toFixed(2);
 }
